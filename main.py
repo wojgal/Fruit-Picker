@@ -4,7 +4,6 @@ from Game import *
 from Options import *
 from Statistics import *
 from Achievements import *
-from Customisation import *
 
 
 def test():
