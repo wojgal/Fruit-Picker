@@ -1,0 +1,29 @@
+zagranie pierwszej gry
+zebranie pierwszego owocu
+zagranie 100 gier
+zagranie 1 000 gier
+zebranie 100 owocow ???
+zebranie 1 000 owocow
+zebranie 10 000 owocow
+zebranie 100 000 owocow
+najwyzszy wynik 50
+najwyzszy wynik 100
+najwyzszy wynik 250
+najwyzszy wynik 1000
+zebranie 100 jablek badz arbuzow badz itd... (bez gwizdek, boxow i coinsow)
+zebranie 1 000 jabel badz arbuzow badz itd... (bez gwizdek, boxow i coinsow)
+zebranie 100 kazdego rodzaju (bez gwizdek, boxow i coinsow)
+zebranie 1 000 kazdego rodzaju
+zebranie 10 boxow badz gwiazdek
+zebranie 100 boxow badz gwiazdek
+laczna ilosc zdobytych punktow 1 000
+laczna ilosc zdobytych punktow 10 000
+laczna ilosc zdobytych punktow 100 000
+laczna ilosc zdobytych punktow 1 000 000
+posiadanie w jednym momencie 100 pieniedzy
+posiadanie w jednym momencie 1 000 pieniedzy
+posiadanie w jednym momencie 10 000 pieniedzy
+
+
+TRZEBA JESZCZE POMYSLEC JAK DOKLADNIE ROZMIESCIC TE LICZBY, ALE WSTEPNIE SA CHYBA OK
+

@@ -1,0 +1,6 @@
+import pygame
+
+FRUIT_GENERATED = pygame.USEREVENT + 1
+FRUIT_PICKED_UP = pygame.USEREVENT + 2
+FRUIT_LOST = pygame.USEREVENT + 3
+CHARACTER_JUMP = pygame.USEREVENT + 4

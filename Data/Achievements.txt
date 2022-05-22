@@ -1,0 +1,12 @@
+1_game_played=True
+100_games_played=False
+1k_games_played=False
+1_fruit_picked=True
+100_fruits_picked=True
+1k_fruits_picked=False
+10k_fruits_picked=False
+100k_fruits_picked=False
+highscore_50=True
+highscore_100=True
+highscore_250=False
+highscore_1k=False
