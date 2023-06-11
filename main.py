@@ -6,10 +6,10 @@ from Statistics import *
 from Achievements import *
 
 
-def test():
-    pass
 
 def main():
+    pygame.init()
+
     window_type = 'main menu'
 
     pygame.mouse.set_visible(False)
@@ -29,6 +29,44 @@ def main():
     fruits = []
     score = 0
 
+
+    clock = pygame.time.Clock()
+
+    while True:
+        clock.tick(FPS)
+        
+        if window_type == 'main menu':
+            window_type = main_menu()
+
+        elif window_type == 'game':
+            pass
+
+        elif window_type == 'extras':
+            window_type = extras()
+
+        elif window_type == 'customisation':
+            window_type = 'extras'
+
+        elif window_type == 'statistics':
+            window_type = statistics(statistics_dict)
+
+        elif window_type == 'achievements':
+            window_type = 'extras'
+
+        elif window_type == 'options':
+            window_type = options(options_dict)
+
+        elif window_type == 'quit':
+            options_file_update(options_dict)
+            achievemenets_file_update(achievements_dict)
+            statistics_file_update(statistics_dict)
+
+            pygame.quit()
+            break
+
+        
+
+    '''
     while window_type != 'quit':
         check_for_achievement_unlock(achievements_dict, statistics_dict)    # ZASTANOWIC SIE GDZIE NAJLEPIEJ TO DAC
         if window_type == 'main menu':
@@ -58,12 +96,9 @@ def main():
 
         elif window_type == 'options':
             window_type = options(options_dict)
+    '''
+    
 
-    options_file_update(options_dict)
-    achievemenets_file_update(achievements_dict)
-    statistics_file_update(statistics_dict)
-
-    pygame.quit()
 
 if __name__ == '__main__':
     main()

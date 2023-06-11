@@ -146,7 +146,6 @@ def random_fruit_class_2():
 
 def random_sweet():
     idx = random.randint(0, len(SWEETS_TYPES_WITH_IMG) - 1)
-    print(idx)
     type_, img = SWEETS_TYPES_WITH_IMG[idx]
     sweet = Fruit(type_, img, SWEET_SPEED, SWEET_VALUE, 0, True)
     return sweet

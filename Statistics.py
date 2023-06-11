@@ -4,33 +4,35 @@ from Fruits import *
 
 STATISTICS_FILE_PATH = Path(os.path.join('Data', 'Statistics.txt.'))
 STATISTICS_FILE_PATH.touch(exist_ok=True)
-STATISTICS_FILE = open(STATISTICS_FILE_PATH, 'r+')
+#STATISTICS_FILE = open(STATISTICS_FILE_PATH, 'r+')
 
 
 def statistics_file_read(statistics_dict):
-    while True:
-        statistic = STATISTICS_FILE.readline()
+    with open(STATISTICS_FILE_PATH, 'r+') as file:
+        while True:
+            statistic = file.readline()
 
-        if statistic == '':
-            STATISTICS_FILE.seek(0)
-            break
+            if not statistic:
+                break
 
-        statistic = statistic.replace('\n', '')
-        statistic_list = statistic.split('=')
-        statistic_name, statistic_value = statistic_list[0], int(statistic_list[1])
+            statistic = statistic.replace('\n', '')
+            statistic_name, statistic_value = statistic.split('=')
 
-        statistics_dict[statistic_name] = statistic_value
+            statistics_dict[statistic_name] = int(statistic_value)
+
 
 
 def statistics_file_update(statistics_dict):
-    for statistic_key in statistics_dict:
-        statistic_name, statistic_value = statistic_key, statistics_dict[statistic_key]
-        write_line = str(statistic_name) + '=' + str(statistic_value) + '\n'
-        STATISTICS_FILE.write(write_line)
+    with open(STATISTICS_FILE_PATH, 'w+') as file:
+        for statistic_name in statistics_dict:
+            statistic_value = statistics_dict.get(statistic_name)
 
-    STATISTICS_FILE.truncate()
-    STATISTICS_FILE.seek(0)
-    STATISTICS_FILE.close()
+            write_line = f'{statistic_name}={statistic_value}\n'
+
+            file.write(write_line)
+        
+        file.truncate()
+
 
 
 def statistics_update_after_game(score, collected_coins, statistics_dict):
@@ -146,34 +148,29 @@ def draw_statistics(statistics_dict, page):
 
 
 def statistics(statistics_dict):
-    clock = pygame.time.Clock()
-
     page = 1
 
-    run = True
+    for event in pygame.event.get():
 
-    while run:
-        clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_position = pygame.mouse.get_pos()
+        if event.type == pygame.QUIT:
+            return 'quit'
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
 
-                if ARROW_RIGHT_OBJECT.get_rect().collidepoint(mouse_position):
-                    play_sound_effect(PAGE_TURN_SOUND)
-                    if not page + 1 > STATISTICS_PAGES:
-                        page += 1
+            if ARROW_RIGHT_BUTTON.check_click():
+                play_sound_effect(PAGE_TURN_SOUND)
+                if not page + 1 > STATISTICS_PAGES:
+                    page += 1
 
-                if ARROW_LEFT_OBJECT.get_rect().collidepoint(mouse_position):
-                    play_sound_effect(PAGE_TURN_SOUND)
-                    if not page - 1 < 1:
-                        page -= 1
+            elif ARROW_LEFT_BUTTON.check_click():
+                play_sound_effect(PAGE_TURN_SOUND)
+                if not page - 1 < 1:
+                    page -= 1
 
-                if RETURN_OBJECT.get_rect().collidepoint(mouse_position):
-                    play_sound_effect(MENU_CLICK_SOUND)
-                    return 'extras'
+            elif RETURN_OBJECT.get_rect().collidepoint(pygame.mouse.get_pos()):
+                play_sound_effect(MENU_CLICK_SOUND)
+                return 'extras'
 
-        draw_statistics(statistics_dict, page)
+    draw_statistics(statistics_dict, page)
 
-    return 'quit'
+    return 'statistics'

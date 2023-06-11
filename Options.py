@@ -1,41 +1,40 @@
 from BasicDrawing import *
 from Sounds import *
+from Button import *
 
 
 OPTIONS_FILE_PATH = Path(os.path.join('Data', 'Options.txt'))
 OPTIONS_FILE_PATH.touch(exist_ok=True)
-OPTIONS_FILE = open(OPTIONS_FILE_PATH, 'r+')
-
 
 def options_file_read(options_dict):
-    while True:
-        option = OPTIONS_FILE.readline()
+    with open(OPTIONS_FILE_PATH, 'r+') as file:
+        while True:
+            option = file.readline()
 
-        if option == '':
-            OPTIONS_FILE.seek(0)
-            break
+            if not option:
+                break
 
-        option = option.replace('\n', '')
-        option_list = option.split('=')
-        option_name, option_boolean = option_list[0], option_list[1]
+            option = option.replace('\n', '')
+            option_name, option_boolean = option.split('=')
 
-        if option_boolean == 'False':
-            option_boolean = False
-        else:
-            option_boolean = True
+            if option_boolean == 'True':
+                options_dict[option_name] = True
+                
+            elif option_boolean == 'False':
+                options_dict[option_name] = False
 
-        options_dict[option_name] = option_boolean
 
 
 def options_file_update(options_dict):
-    for option_key in options_dict:
-        option_name, option_boolean = option_key, options_dict[option_key]
-        write_line = str(option_name) + '=' + str(option_boolean) + '\n'
-        OPTIONS_FILE.write(write_line)
+    with open(OPTIONS_FILE_PATH, 'w+') as file:
+        for option_name in options_dict:
+            option_boolean = options_dict.get(option_name)
 
-    OPTIONS_FILE.truncate()
-    OPTIONS_FILE.seek(0)
-    OPTIONS_FILE.close()
+            write_line = f'{option_name}={option_boolean}\n'
+            
+            file.write(write_line)
+
+        file.truncate()
 
 
 
@@ -48,12 +47,18 @@ SOUNDS_SETTINGS_TEXT = FONT.render("EFEKTY DZWIEKOWE", 1, BLACK)
 RETURN_TEXT = FONT_BIG.render('WROC', 1, BLACK)
 OPTIONS_TEXT = FONT_BIG.render('OPCJE', 1, BLACK)
 
-MUSIC_SETTINGS_BOX_OBJECT = Image_with_Rect(BLACK_BOX, (WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + MUSIC_SETTINGS_TEXT.get_width() + 90, (WINDOW_HEIGHT - MUSIC_SETTINGS_TEXT.get_height()) / 2,
-                                            BLACK_BOX.get_width(), BLACK_BOX.get_height())
-SOUNDS_SETTINGS_BOX_OBJECT = Image_with_Rect(BLACK_BOX, (WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + SOUNDS_SETTINGS_TEXT.get_width() + 90, (WINDOW_HEIGHT - SOUNDS_SETTINGS_TEXT.get_height()) / 2 + MUSIC_SETTINGS_TEXT.get_height() + 20,
-                                             BLACK_BOX.get_width(), BLACK_BOX.get_height())
-RETURN_OBJECT = Image_with_Rect(RETURN_TEXT, (WINDOW_WIDTH - RETURN_TEXT.get_width()) / 2, 540, RETURN_TEXT.get_width(), RETURN_TEXT.get_height())
-OPTIONS_OBJECT = Image_with_Rect(OPTIONS_TEXT, (WINDOW_WIDTH - OPTIONS_TEXT.get_width()) / 2, 155, OPTIONS_TEXT.get_width(), OPTIONS_TEXT.get_height())
+MUSIC_SETTINGS_BUTTON = Button((WINDOW_WIDTH - PARCHMENT.get_width()) // 2 + MUSIC_SETTINGS_TEXT.get_width() + 90, (WINDOW_HEIGHT - MUSIC_SETTINGS_TEXT.get_height()) // 2, BLACK_BOX)
+#MUSIC_SETTINGS_BOX_OBJECT = Image_with_Rect(BLACK_BOX, (WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + MUSIC_SETTINGS_TEXT.get_width() + 90, (WINDOW_HEIGHT - MUSIC_SETTINGS_TEXT.get_height()) / 2,
+                                            #BLACK_BOX.get_width(), BLACK_BOX.get_height())
+#SOUNDS_SETTINGS_BOX_OBJECT = Image_with_Rect(BLACK_BOX, (WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + SOUNDS_SETTINGS_TEXT.get_width() + 90, (WINDOW_HEIGHT - SOUNDS_SETTINGS_TEXT.get_height()) / 2 + MUSIC_SETTINGS_TEXT.get_height() + 20,
+                                             #BLACK_BOX.get_width(), BLACK_BOX.get_height())
+SOUNDS_SETTINGS_BUTTON = Button((WINDOW_WIDTH - PARCHMENT.get_width()) // 2 + SOUNDS_SETTINGS_TEXT.get_width() + 90, (WINDOW_HEIGHT - SOUNDS_SETTINGS_TEXT.get_height()) // 2 + MUSIC_SETTINGS_TEXT.get_height() + 20, BLACK_BOX)
+
+RETURN_BUTTON = Button((WINDOW_WIDTH - RETURN_TEXT.get_width()) // 2, 540, RETURN_TEXT)
+OPTIONS_BUTTON = Button((WINDOW_WIDTH - OPTIONS_TEXT.get_width()) / 2, 155, OPTIONS_TEXT)
+
+#RETURN_OBJECT = Image_with_Rect(RETURN_TEXT, (WINDOW_WIDTH - RETURN_TEXT.get_width()) / 2, 540, RETURN_TEXT.get_width(), RETURN_TEXT.get_height())
+#OPTIONS_OBJECT = Image_with_Rect(OPTIONS_TEXT, (WINDOW_WIDTH - OPTIONS_TEXT.get_width()) / 2, 155, OPTIONS_TEXT.get_width(), OPTIONS_TEXT.get_height())
 
 
 def draw_options(options_dict):
@@ -63,16 +68,16 @@ def draw_options(options_dict):
     WINDOW.blit(OPTIONS_TEXT, ((WINDOW_WIDTH - OPTIONS_TEXT.get_width()) / 2 , (WINDOW_HEIGHT - PARCHMENT.get_height()) / 2 + 70))
 
     WINDOW.blit(MUSIC_SETTINGS_TEXT, ((WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + 70, WINDOW_HEIGHT / 2))
-    WINDOW.blit(MUSIC_SETTINGS_BOX_OBJECT.get_image(), MUSIC_SETTINGS_BOX_OBJECT.get_coordinates())
+    WINDOW.blit(MUSIC_SETTINGS_BUTTON.get_image(), MUSIC_SETTINGS_BUTTON.get_cords())
     WINDOW.blit(SOUNDS_SETTINGS_TEXT, ((WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + 70, WINDOW_HEIGHT / 2 + MUSIC_SETTINGS_TEXT.get_height() + 20))
-    WINDOW.blit(SOUNDS_SETTINGS_BOX_OBJECT.get_image(), SOUNDS_SETTINGS_BOX_OBJECT.get_coordinates())
+    WINDOW.blit(SOUNDS_SETTINGS_BUTTON.get_image(), SOUNDS_SETTINGS_BUTTON.get_cords())
 
     if options_dict['music']:
-        WINDOW.blit(BLACK_BOX_X, MUSIC_SETTINGS_BOX_OBJECT.get_coordinates())
+        WINDOW.blit(BLACK_BOX_X, MUSIC_SETTINGS_BUTTON.get_cords())
     if options_dict['sound']:
-        WINDOW.blit(BLACK_BOX_X, SOUNDS_SETTINGS_BOX_OBJECT.get_coordinates())
+        WINDOW.blit(BLACK_BOX_X, SOUNDS_SETTINGS_BUTTON.get_cords())
 
-    WINDOW.blit(RETURN_OBJECT.get_image(), RETURN_OBJECT.get_coordinates())
+    WINDOW.blit(RETURN_BUTTON.get_image(), RETURN_BUTTON.get_cords())
 
     draw_game_version()
     draw_cursor()
@@ -81,28 +86,24 @@ def draw_options(options_dict):
 
 
 def options(options_dict):
-    clock = pygame.time.Clock()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return 'quit'
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
 
-    run = True
+            if RETURN_BUTTON.check_click():
+                play_sound_effect(MENU_CLICK_SOUND)
+                return 'main menu'
+            
+            if MUSIC_SETTINGS_BUTTON.check_click():
+                play_sound_effect(MENU_CLICK_SOUND)
+                options_dict['music'] = turn_on_off_music(options_dict['music'])
 
-    while run:
-        clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_position = pygame.mouse.get_pos()
+            if SOUNDS_SETTINGS_BUTTON.check_click():
+                play_sound_effect(MENU_CLICK_SOUND)
+                options_dict['sound'] = turn_on_off_sounds(options_dict['sound'])
 
-                if RETURN_OBJECT.get_rect().collidepoint(mouse_position):
-                    play_sound_effect(MENU_CLICK_SOUND)
-                    return 'main menu'
-                if MUSIC_SETTINGS_BOX_OBJECT.get_rect().collidepoint(mouse_position):
-                    play_sound_effect(MENU_CLICK_SOUND)
-                    options_dict['music'] = turn_on_off_music(options_dict['music'])
-                if SOUNDS_SETTINGS_BOX_OBJECT.get_rect().collidepoint(mouse_position):
-                    play_sound_effect(MENU_CLICK_SOUND)
-                    options_dict['sound'] = turn_on_off_sounds(options_dict['sound'])
+    draw_options(options_dict)
 
-        draw_options(options_dict)
-
-    return 'quit'
+    return 'options'

@@ -1,6 +1,7 @@
 import pygame.transform
 
 from BasicSettings import *
+from Button import *
 
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join('Images', 'Background2.jpg')), (WINDOW_WIDTH, WINDOW_HEIGHT))
 LOGO = pygame.image.load(os.path.join('Images', 'Fruit Picker.png'))
@@ -33,6 +34,9 @@ ARROW_LEFT_IMG = pygame.transform.flip(ARROW_RIGHT_IMG, True, False)
 ARROW_RIGHT_OBJECT = Image_with_Rect(ARROW_RIGHT_IMG, (WINDOW_WIDTH + PARCHMENT.get_width()) / 2 - ARROW_RIGHT_IMG.get_width() - 20, WINDOW_HEIGHT / 2, 28, 28)
 ARROW_LEFT_OBJECT = Image_with_Rect(ARROW_LEFT_IMG, (WINDOW_WIDTH - PARCHMENT.get_width()) / 2 + 20, WINDOW_HEIGHT / 2, 28, 28)
 
+ARROW_RIGHT_BUTTON = Button((WINDOW_WIDTH + PARCHMENT.get_width()) // 2 - ARROW_RIGHT_IMG.get_width() - 20, WINDOW_HEIGHT // 2, ARROW_RIGHT_IMG)
+ARROW_LEFT_BUTTON = Button((WINDOW_WIDTH - PARCHMENT.get_width()) // 2 + 20, WINDOW_HEIGHT // 2, ARROW_LEFT_IMG)
+
 def draw_arrows():
-    WINDOW.blit(ARROW_RIGHT_OBJECT.get_image(), ARROW_RIGHT_OBJECT.get_coordinates())
-    WINDOW.blit(ARROW_LEFT_OBJECT.get_image(), ARROW_LEFT_OBJECT.get_coordinates())
+    WINDOW.blit(ARROW_RIGHT_BUTTON.get_image(), ARROW_RIGHT_BUTTON.get_cords())
+    WINDOW.blit(ARROW_LEFT_BUTTON.get_image(), ARROW_LEFT_BUTTON.get_cords())

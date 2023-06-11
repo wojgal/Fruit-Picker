@@ -11,7 +11,7 @@ YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
 
 GAME_NAME = "Fruit Picker"
-GAME_VERSION = 0.5
+GAME_VERSION = 0.6
 FPS = 60
 
 pygame.display.set_caption(GAME_NAME)
