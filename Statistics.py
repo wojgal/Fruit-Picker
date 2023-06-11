@@ -44,6 +44,7 @@ def statistics_update_after_game(score, collected_coins, statistics_dict):
     statistics_dict['all_games_played'] += 1
 
 
+
 def draw_items_with_amount(statistics_dict, list_of_items):
     px_width, px_height = 500, 220
 
